@@ -485,6 +485,18 @@ config DECK_CPX_HOST_ON_UART2
       deck attached (i.e there will be no 1-wire memory to automatically detect
       and start the driver).
 
+config DECK_CPX_HOST_ON_UART1
+  bool "Support wired external host using CPX on UART1"
+  select ENABLE_CPX
+  select ENABLE_CPX_ON_UART1
+  default n
+  help
+      This enables the driver for using CPX (and CRTP) over UART1 to a wired host
+      (like a Raspberry Pi). Note, that the driver for this will have to be
+      forced, since this is intended to be used without actually having a proper
+      deck attached (i.e there will be no 1-wire memory to automatically detect
+      and start the driver).
+
 config DECK_ACS37800
     bool "Support for the power measurement deck"
     default n

@@ -43,4 +43,19 @@ config CPX_UART2_BAUDRATE
   help
       Set the baudrate that will be used for CPX on UART2
 
+config ENABLE_CPX_ON_UART1
+  bool "Enable CPX on UART1"
+  depends on ENABLE_CPX
+  default n
+  help
+      This enables CPX routing on UART1
+
+config CPX_UART1_BAUDRATE
+  int "CPX UART1 baudrate"
+  depends on ENABLE_CPX_ON_UART1
+  range 9600 2000000
+  default 576000
+  help
+      Set the baudrate that will be used for CPX on UART1
+
 endmenu

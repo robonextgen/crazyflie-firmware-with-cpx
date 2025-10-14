@@ -40,7 +40,14 @@
 
 #include "cpx_external_router.h"
 #include "cpx_internal_router.h"
+#ifdef CONFIG_ENABLE_CPX_ON_UART2
 #include "cpx_uart_transport.h"
+#endif
+#ifdef CONFIG_ENABLE_CPX_ON_UART1
+#include "cpx_uart1_transport.h"
+#endif
+
+
 
 typedef struct {
   CPXRoutablePacket_t txp;
@@ -100,8 +107,13 @@ static void route(Receiver_t receive, CPXRoutablePacket_t* rxp, RouteContext_t* 
         case CPX_T_WIFI_HOST:
         case CPX_T_ESP32:
         case CPX_T_GAP8:
+#ifdef CONFIG_ENABLE_CPX_ON_UART1
+          //DEBUG_PRINT("%s [0x%02X] -> UART1 [0x%02X] (%u)\n", routerName, source, destination, cpxDataLength);
+          splitAndSend(rxp, context, cpxUART1TransportSend, CPX_UART_TRANSPORT_MTU - CPX_ROUTING_PACKED_SIZE);
+#elif defined(CONFIG_ENABLE_CPX_ON_UART2)
           //DEBUG_PRINT("%s [0x%02X] -> UART2 [0x%02X] (%u)\n", routerName, source, destination, cpxDataLength);
           splitAndSend(rxp, context, cpxUARTTransportSend, CPX_UART_TRANSPORT_MTU - CPX_ROUTING_PACKED_SIZE);
+#endif
           break;
         case CPX_T_STM32:
           //DEBUG_PRINT("%s [0x%02X] -> STM32 [0x%02X] (%u)\n", routerName, source, destination, cpxDataLength);
@@ -117,7 +129,11 @@ static void route(Receiver_t receive, CPXRoutablePacket_t* rxp, RouteContext_t* 
 
 static void router_from_uart(void* _param) {
   xEventGroupSetBits(startUpEventGroup, START_UP_UART_ROUTER_RUNNING);
+#ifdef CONFIG_ENABLE_CPX_ON_UART1
+  route(cpxUART1TransportReceive, &uartRxBuf, &uart_task_context, "UART1");
+#elif defined(CONFIG_ENABLE_CPX_ON_UART2)
   route(cpxUARTTransportReceive, &uartRxBuf, &uart_task_context, "UART2");
+#endif
 }
 
 static void router_from_internal(void* _param) {
