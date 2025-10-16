@@ -23,7 +23,6 @@ config SYSLINK_RX_DMA
 
 config ENABLE_CPX
   bool "Enable CPX"
-  select ENABLE_CPX_ON_UART2
   default y
   help
       This enables CPX routers and API
@@ -31,7 +30,7 @@ config ENABLE_CPX
 config ENABLE_CPX_ON_UART2
   bool "Enable CPX on UART2"
   depends on ENABLE_CPX
-  default y
+  default n
   help
       This enables CPX routing on UART2
 

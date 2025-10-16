@@ -1,6 +1,12 @@
 CONFIG_PLATFORM_CF2=y
 
-# CPX Configuration for UART1
+# Disable AI deck to prevent UART2 CPX conflict
+# CONFIG_DECK_AI is not set
+
+# CPX Configuration for UART2: disabled
+CONFIG_ENABLE_CPX_ON_UART2=n
+
+# CPX Configuration for UART1: enabled
 CONFIG_ENABLE_CPX=y
 CONFIG_ENABLE_CPX_ON_UART1=y
 # CONFIG_CPX_UART1_BAUDRATE=576000
