@@ -497,6 +497,14 @@ config DECK_CPX_HOST_ON_UART1
       deck attached (i.e there will be no 1-wire memory to automatically detect
       and start the driver).
 
+config CPX_UART1_PING_TEST
+  bool "Enable CPX UART1 ping test"
+  depends on DECK_CPX_HOST_ON_UART1
+  default n
+  help
+      Enable automatic ping test that sends CPX test packets every 2 seconds
+      via UART1. This is useful for testing CPX communication.
+
 config DECK_ACS37800
     bool "Support for the power measurement deck"
     default n
